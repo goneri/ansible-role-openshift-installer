@@ -1,0 +1,30 @@
+---
+- name: Fetch openshift-installer
+  get_url:
+    url: "https://mirror.openshift.com/pub/openshift-v4/clients/ocp/{{ deploy_openshift__release }}/openshift-install-linux-{{ deploy_openshift__release  }}.tar.gz"
+    dest: "{{ deploy_openshift__cache_directory }}/openshift-install-linux-{{ deploy_openshift__release }}.tar.gz"
+    checksum: "{{ deploy_openshift__checksum }}"
+
+- name: Extract openshift-installer
+  unarchive:
+    src: "{{ deploy_openshift__cache_directory }}/openshift-install-linux-{{ deploy_openshift__release }}.tar.gz"
+    dest: "{{ deploy_openshift__bin_directory }}"
+    exclude:
+      - README.md
+  
+- name: Create session directory
+  file:
+    path: "{{ deploy_openshift__session_directory }}"
+    state: directory
+    recurse: yes
+
+- name: write the install-config.yaml file
+  template:
+    src: install-config.yaml.j2
+    dest: "{{ deploy_openshift__session_directory }}/install-config.yaml"
+
+- name: Start the deployment
+  shell:
+    "{{ deploy_openshift__bin_directory }}/openshift-install create cluster|tee openshift-install.log"
+  args:
+    chdir: "{{ deploy_openshift__session_directory }}"

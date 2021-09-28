@@ -1,0 +1,19 @@
+- hosts: localhost
+  vars:
+    deploy_openshift__pullSecret: "{{ lookup('file', '~/Downloads/pull-secret.txt')  }}"
+    deploy_openshift__metadata_name: glb
+    deploy_openshift__baseDomaine: ansiblecloud.xyz
+    deploy_openshift__sshKey: "{{ lookup('file', '~/.ssh/id_ecdsa.pub') }}"
+    deploy_openshift__platform_aws_region: "ca-central-1"
+    deploy_openshift__bin_directory: "~/bin"
+    deploy_openshift__cache_directory: "~/tmp"
+  tasks:
+    - import_role:
+        name: deploy_openshift
+        tasks_from: setup
+    - name: Waiting
+      pause:
+        minutes: 60
+    - import_role:
+        name: deploy_openshift
+        tasks_from: teardown

@@ -1,0 +1,6 @@
+---
+- name: Remove the deployment
+  shell:
+    "{{ deploy_openshift__bin_directory }}/openshift-install destroy cluster|tee openshift-destroy.log"
+  args:
+    chdir: "{{ deploy_openshift__session_directory }}"

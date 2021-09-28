@@ -1,0 +1,9 @@
+---
+deploy_openshift__metadata_name: "openshift_{{ username }}"
+deploy_openshift__session_directory: "~/openshift_session/{{ deploy_openshift__metadata_name }}" 
+deploy_openshift__cache_directory: "{{ /opt/cache/files }}" 
+deploy_openshift__bin_directory: "{{ /usr/local/bin }}" 
+deploy_openshift__pullSecret: 
+deploy_openshift__sshKey: "{{ lookup('file', '~/.ssh/id_ecdsa.pub') }}"
+deploy_openshift__release: 4.8.13
+deploy_openshift__checksum: sha256:da072933840511a0a8011b4096f5bbd597db31d35ca339701eec16e1044e995a.
